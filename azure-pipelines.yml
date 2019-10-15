@@ -133,7 +133,7 @@ jobs:
   - task: GitHubRelease@0
     displayName: "Update Github Release"
     inputs:
-      gitHubConnection: pfzzz
+      gitHubConnection: 0mars
       repositoryName: pfzzz/rack-plugin
       action: edit
       tag: Nightly
