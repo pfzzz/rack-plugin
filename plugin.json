@@ -1,0 +1,25 @@
+{
+  "slug": "Pfzzz",
+  "name": "Pfzzz",
+  "version": "1.0.0",
+  "license": "proprietary",
+  "brand": "Pfzzz",
+  "author": "Omar Shaban",
+  "authorEmail": "pfzzz.pfzzz@gmail.com",
+  "authorUrl": "",
+  "pluginUrl": "",
+  "manualUrl": "",
+  "sourceUrl": "",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "OhGates",
+      "name": "OhGates",
+      "description": "",
+      "tags": [
+        "Function generator"
+      ]
+    }
+  ]
+}
