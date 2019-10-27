@@ -1,5 +1,5 @@
 # pfzzz
-VCV Rack modules
+modules for VCV Rack
 
 ## Modules:
 #### Oh Gates!:
