@@ -20,15 +20,8 @@ struct OhGates : Module {
 		NUM_LIGHTS
 	};
 
-	OhGates() {
-		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(BUFFER_SIZE_PARAM, 0.f, 1.f, 0.f, "");
-		configParam(GATE_LENGTH_PARAM, 0.f, 1.f, 0.f, "");
-	}
-
 	dsp::SchmittTrigger trigger_in;
 	dsp::SchmittTrigger reset_in;
-	int index;
 	int current = 0;
 	int num_triggers = 1;
 
@@ -48,6 +41,12 @@ struct OhGates : Module {
 	bool trigger_on = false;
 	int remaining_samples = 0;
 	int sampleRate = 0;
+
+	OhGates() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(BUFFER_SIZE_PARAM, 0.f, 10.f, 0.f, "");
+		configParam(GATE_LENGTH_PARAM, 20.f, 6000.f, 0.f, "");
+	}
 
 	void process(const ProcessArgs& args) override {
 		if (inputs[GATE_IN_INPUT].isConnected()) {
@@ -86,15 +85,15 @@ struct OhGates : Module {
 
 	int get_num_gates_to_buffer()
 	{
-		float val = params[BUFFER_SIZE_PARAM].getValue() * 10;
+		float val = params[BUFFER_SIZE_PARAM].getValue();
 		return (int)val;
 	}
 
 	float get_gate_time()
 	{
-		float val = params[GATE_LENGTH_PARAM].getValue() * 6000;
-		if (val < 1) {
-			val = 1;
+		float val = params[GATE_LENGTH_PARAM].getValue();
+		if (val < 20) {
+			val = 20;
 		}
 
 		return val/1000;
