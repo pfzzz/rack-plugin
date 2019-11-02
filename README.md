@@ -2,7 +2,7 @@
 modules for VCV Rack
 
 ## Modules:
-#### Oh Gates!:
+#### Oh Gates!
 A function generator that works like follows:
 takes gate input
 and outputs 1 gate for each X number of gates it receives
