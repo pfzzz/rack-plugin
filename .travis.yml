@@ -52,6 +52,9 @@ script:
 - export RACK_DIR="${HOME}"/Rack/Rack-SDK
 - make dep
 - make dist
+before_deploy:
+  - export RELEASE_PKG_FILE=$(ls dist/*.zip)
+  - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
 deploy:
   provider: releases
   api_key:
@@ -60,4 +63,4 @@ deploy:
   file_glob: true
   skip_cleanup: true
   on:
-    repo: pfzzz/rack-plugin
+    tags: true
