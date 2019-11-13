@@ -62,5 +62,4 @@ deploy:
   file: "${RELEASE_PKG_FILE}"
   file_glob: true
   on:
-    repo: pfzzz/rack-plugin
-    #    tags: true
+    tags: true
