@@ -59,3 +59,4 @@ deploy:
   file: dist/Pfzzz-*-*.zip
   on:
     repo: pfzzz/rack-plugin
+    tags: true
