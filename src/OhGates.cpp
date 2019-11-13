@@ -10,6 +10,7 @@ struct OhGates : Module {
 	enum InputIds {
 		GATE_IN_INPUT,
 		RESET_INPUT,
+		CV_INPUT,
 		NUM_INPUTS
 	};
 	enum OutputIds {
@@ -41,11 +42,12 @@ struct OhGates : Module {
 	bool trigger_on = false;
 	int remaining_samples = 0;
 	int sampleRate = 0;
+	int buff_size = 1;
 
 	OhGates() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(BUFFER_SIZE_PARAM, 0.f, 10.f, 0.f, "");
-		configParam(GATE_LENGTH_PARAM, 20.f, 6000.f, 0.f, "");
+		configParam(BUFFER_SIZE_PARAM, 0, 10, 0, "");
+		configParam(GATE_LENGTH_PARAM, 20, 6000, 20, "");
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -63,6 +65,10 @@ struct OhGates : Module {
 			if (reset_in.isHigh()) {
 				this->current = 0;
 			}
+		}
+		if (buff_size != this->get_num_gates_to_buffer()) {
+			this->current = 0;
+			buff_size = this->get_num_gates_to_buffer();
 		}
 
 		if (this->remaining_samples > 0) {
@@ -92,6 +98,10 @@ struct OhGates : Module {
 	float get_gate_time()
 	{
 		float val = params[GATE_LENGTH_PARAM].getValue();
+		if (inputs[CV_INPUT].isConnected()) {
+			val *= inputs[CV_INPUT].getVoltage()/10.0f;
+		}
+
 		if (val < 20) {
 			val = 20;
 		}
@@ -101,8 +111,9 @@ struct OhGates : Module {
 
 	void fire_gate() {
 		this->remaining_samples = this->sampleRate * this->get_gate_time();
-		INFO("remaining samples: %d", this->remaining_samples);
-		INFO("gate time: %.2f", this->get_gate_time());
+		// INFO("remaining samples: %d", this->remaining_samples);
+		// INFO("gate time: %.2f", this->get_gate_time());
+		// INFO("CV IN: %.2f", inputs[CV_INPUT].getVoltage()/10.0f);
 		outputs[GATE_OUT_OUTPUT].setVoltage(10.0f);
 		this->current = 0;
 	}
@@ -114,8 +125,8 @@ struct OhGates : Module {
 
 	void update_trigger(bool on) {
 		if (on != this->trigger_on) {
-			INFO("updating status");
-			INFO("TRIGGER ON: %d", this->trigger_on);
+			// INFO("updating status");
+			// INFO("TRIGGER ON: %d", this->trigger_on);
 			if (on) {
 				this->fire_event(TURNED_ON);
 			} else {
@@ -143,9 +154,8 @@ struct OhGatesWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(8.00, 77.061)), module, OhGates::GATE_IN_INPUT));
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(21.80, 77.061)), module, OhGates::RESET_INPUT));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(15.24, 100.713)), module, OhGates::GATE_OUT_OUTPUT));
-
-		
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(8.00, 100.713)), module, OhGates::CV_INPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(21.80, 100.713)), module, OhGates::GATE_OUT_OUTPUT));
 	}
 };
 
