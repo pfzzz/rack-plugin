@@ -47,7 +47,7 @@ struct OhGates : Module {
 	OhGates() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BUFFER_SIZE_PARAM, 0, 10, 0, "");
-		configParam(GATE_LENGTH_PARAM, 20, 6000, 20, "");
+		configParam(GATE_LENGTH_PARAM, 20, 1000, 20, "");
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -81,7 +81,7 @@ struct OhGates : Module {
 	}
 
 	void fire_event(int event) {
-		if (event == TURNED_ON){
+		if (event == TURNED_ON) {
 			this->current++;
 			if (current == this->get_num_gates_to_buffer()) {
 				this->fire_gate();
