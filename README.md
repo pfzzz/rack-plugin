@@ -16,4 +16,4 @@ The 2nd knob controls the gate length and defined between
 
 - Buffer size [default 1]: range 1-10
 
-- Gate length [in milliseconds]: 20-6000
+- Gate length [in milliseconds]: 20-1000
